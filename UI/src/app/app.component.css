@@ -1,0 +1,39 @@
+.e-toolbar {
+    margin:0;
+    background-color: white;
+}
+
+.e-toolbar .e-toolbar-items{
+    background: white;
+}
+
+.e-toolbar .e-toolbar-item {
+    background: white;    
+}
+
+.e-toolbar .e-tbar-btn {
+    background: white;    
+}
+
+.e-toolbar .e-tbar-btn:hover {
+    background: #cecece;    
+}
+
+.container{
+    padding:5px;
+}
+
+.nexpense-grid-container{
+    float: left;
+    width:70%;
+    height: 85vh;    
+}
+
+.nexpense-chart-container{
+    float: left;
+    width:30%;
+}
+
+.e-grid{
+    height:95%;
+}
