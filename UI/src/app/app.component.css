@@ -21,17 +21,22 @@
 
 .container{
     padding:5px;
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
 }
 
-.nexpense-grid-container{
-    float: left;
-    width:70%;
-    height: 85vh;    
+.charts-container{
+    display:flex;
+    flex-direction: column;
 }
 
-.nexpense-chart-container{
-    float: left;
-    width:30%;
+.nexpense-grid-container{    
+    width:80%;
+}
+
+.nexpense-chart-container{    
+    padding-top:70px;    
 }
 
 .e-grid{

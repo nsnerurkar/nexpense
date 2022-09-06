@@ -22,8 +22,15 @@ AppDataSource.initialize()
 
 router.get('/expense', async function (req: Request, res: Response, next: NextFunction) {
   try {
+    const now = new Date();
+    const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
+    const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+    
     const repository = await AppDataSource.getRepository(Expense);
-    const allItems = await repository.find();
+    const allItems = await repository.createQueryBuilder('Expense')
+      .where('Expense.Date >= :startDate', {startDate: firstDay})
+      .andWhere('Expense.Date <= :endDate', {endDate: lastDay})
+      .getMany();
     res.send(allItems);
   }
   catch (err) {
@@ -31,11 +38,16 @@ router.get('/expense', async function (req: Request, res: Response, next: NextFu
   }
 });
 
-router.get('/expense/:id', async function (req: Request, res: Response, next: NextFunction) {
+router.get('/expense/byDate/:dateStart/:dateEnd', async function (req: Request, res: Response, next: NextFunction) {
   try {
+    const dateStart = new Date(req.params.dateStart);
+    const dateEnd = new Date(req.params.dateEnd);
     const repository = await AppDataSource.getRepository(Expense);
-    const item = await repository.findOneBy({ExpenseID: req.params.id});
-    res.send(item);
+    const allItems = await repository.createQueryBuilder('Expense')
+      .where('Expense.Date >= :startDate', {startDate: dateStart})
+      .andWhere('Expense.Date <= :endDate', {endDate: dateEnd})
+      .getMany();
+    res.send(allItems);
   }
   catch (err) {
     return next(err);

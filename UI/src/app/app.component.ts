@@ -34,6 +34,17 @@ export class AppComponent implements OnInit {
   };
 
   pieData:any[] = [];
+
+  primaryXAxis = {valueType: 'Category', title: 'Months'};
+  primaryYAxis = {minimum: 0, maximum: 200000, interval: 50000, title: 'Amount'};
+
+  monthData = [
+    { month: "January", amount: 150000 },
+    { month: "February", amount: 98000 },
+    { month: "March", amount: 101000 },
+    { month: "April", amount: 78000 },
+    { month: "May", amount: 89000 }
+  ];
   
   @ViewChild('grid') public grid!: GridComponent;
 

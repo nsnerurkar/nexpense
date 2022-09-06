@@ -16,12 +16,21 @@
       </e-columns>
     </ejs-grid>
   </div>
-  <div class="nexpense-chart-container">
-    <ejs-accumulationchart id="chart-container" title='Expenses By Type' [legendSettings]='legendSettings' enableSmartLabels="true">
-      <e-accumulation-series-collection>
-          <e-accumulation-series [dataSource]='pieData' xName='Type' yName='Amount' [dataLabel]='datalabel' radius="60%">
-          </e-accumulation-series>
-      </e-accumulation-series-collection>
-    </ejs-accumulationchart>
+  <div class="charts-container">
+    <div class="nexpense-pie-container">
+      <ejs-accumulationchart height="350px" width="350px" id="chart-container" title='Expenses By Type' [legendSettings]='legendSettings' enableSmartLabels="true">
+        <e-accumulation-series-collection>
+            <e-accumulation-series [dataSource]='pieData' xName='Type' yName='Amount' [dataLabel]='datalabel' radius="60%">
+            </e-accumulation-series>
+        </e-accumulation-series-collection>
+      </ejs-accumulationchart>
+    </div>
+    <div class="nexpense-chart-container">
+      <ejs-chart id="chart-container2" height="250px" width="100%" [primaryXAxis]='primaryXAxis' [primaryYAxis]='primaryYAxis' title='By Month' [legendSettings]='legendSettings' enableSmartLabels="true">
+        <e-series-collection>
+            <e-series [dataSource]='monthData' type='Column' xName='month' yName='amount' name='Expense By Month'></e-series>
+        </e-series-collection>
+      </ejs-chart>
+    </div>
   </div>
 </div>

@@ -28,11 +28,8 @@ export class DatabaseService {
       case "delete":
       case "read":
         return retUrl;      
-      case "query":
-        return(retUrl + "query/");
-      case "form":
-        return(retUrl + "form/");
-
+      case "byDate":
+        return(retUrl + "byDate/");
       default:
         throw new Error("Invalid type for making URL");
 
@@ -41,6 +38,10 @@ export class DatabaseService {
 
   getExpenseData(){
     return this.http.get<Expense[]>(this.getUrl('Expense','read'));
+  }
+
+  getExpenseByDateRange(dateStart:Date,dateEnd:Date){
+    return this.http.get<Expense[]>(this.getUrl('Expense','byDate') +'/'+dateStart.toISOString()+'/'+dateEnd.toISOString());
   }
 
 

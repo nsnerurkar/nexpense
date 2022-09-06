@@ -4,7 +4,7 @@ import { ToolbarModule } from '@syncfusion/ej2-angular-navigations';
 import { EditService, GridModule, ToolbarService } from '@syncfusion/ej2-angular-grids';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ChartModule, AccumulationChartAllModule, AccumulationChartModule, AccumulationDataLabelService } from '@syncfusion/ej2-angular-charts';
+import { ChartModule, AccumulationChartAllModule, AccumulationChartModule, AccumulationDataLabelService, ColumnSeriesService, CategoryService } from '@syncfusion/ej2-angular-charts';
 import { FormsModule } from '@angular/forms';
 import { DatePickerAllModule } from '@syncfusion/ej2-angular-calendars';
 import { TextBoxModule } from '@syncfusion/ej2-angular-inputs';
@@ -30,7 +30,9 @@ import { HttpClientModule } from '@angular/common/http';
   providers: [
     AccumulationDataLabelService,
     ToolbarService,
-    EditService
+    EditService,
+    ColumnSeriesService,
+    CategoryService
   ],
   bootstrap: [AppComponent]
 })
