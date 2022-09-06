@@ -6,7 +6,7 @@ export class Expense extends BaseEntity {
   ExpenseID!: number
 
   @Column()
-  Date!: string
+  Date!: Date
 
   @Column()
   Amount!: number

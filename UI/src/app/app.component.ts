@@ -1,8 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Column, EditEventArgs, GridComponent, ToolbarItems } from '@syncfusion/ej2-angular-grids';
+import { Column, DataStateChangeEventArgs, EditEventArgs, GridComponent, ToolbarItems } from '@syncfusion/ej2-angular-grids';
 import { setCurrencyCode, loadCldr } from '@syncfusion/ej2-base';
 import { Query, DataManager, RemoteSaveAdaptor  } from '@syncfusion/ej2-data';
 import { DatabaseService } from './services/database.service';
+import { ExpenseType } from './models/expense';
 
 @Component({
   selector: 'app-root',
@@ -11,9 +12,7 @@ import { DatabaseService } from './services/database.service';
 })
 export class AppComponent implements OnInit {
 
-  public data!: DataManager;
-
-  E_TYPES = [{label:'Electricity', value:'electricity'}, {label:'Rent', value:'rent'}]
+  public data!: DataManager;  
 
   pageSettings = { pageSize: 10 };
   datalabel = { visible: true, name: 'text', position: 'Inside', template: '${point.x}: <b>${point.y} %</b>' };  
@@ -27,13 +26,15 @@ export class AppComponent implements OnInit {
     'Number':{ params: { decimals: 2 }},
     'ExpenseType': {params: {
         allowFiltering: true,
-        dataSource: new DataManager(this.E_TYPES),
+        dataSource: new DataManager(this.getExpenseTypes()),
         fields: { text: 'label', value: 'value' },
         query: new Query(),
         actionComplete: () => false
       }}
   };
 
+  pieData:any[] = [];
+  
   @ViewChild('grid') public grid!: GridComponent;
 
   constructor(public dbSvc:DatabaseService){
@@ -52,18 +53,41 @@ export class AppComponent implements OnInit {
         updateUrl: this.dbSvc.getUrl('Expense','update'),
         removeUrl: this.dbSvc.getUrl('Expense','delete'),
       });
+      this.calcPieData();
     });
+    
   }
 
   dataBound(){
     this.grid.autoFitColumns(['Description']);
   }
 
-  getPieData(){
-    return [
-      { 'Type': 'Chrome', Amount: 37 }, { 'Type': 'UC Browser', Amount: 17 },
-      { 'Type': 'iPhone', Amount: 19 }, { 'Type': 'Others', Amount: 4 }, { 'Type': 'Opera', Amount: 11 }
-    ];
+  getExpenseTypes(){
+    let eTypesList:any[] = [];
+    Object.keys(ExpenseType).forEach((k) => {
+      eTypesList.push({'label':k,'value':ExpenseType[k as keyof typeof ExpenseType]});
+    });
+    return eTypesList;
+  }
+
+  calcPieData(){
+    let dataJson = this.data.dataSource.json;
+    let aggregate:any = {};
+    dataJson?.forEach((obj:any)=>{
+      if (obj.Type in aggregate){
+        aggregate[obj.Type] += obj.Amount;
+      } else {
+        aggregate[obj.Type] = obj.Amount;
+      }
+    });
+    
+    let pData:any[] = [];
+    const Sum = Object.values(aggregate).reduce<number>((a:any, b:any) => a + b,0);
+    Object.keys(aggregate).forEach((k) =>{
+      pData.push({'Type':k,Amount:Math.round(aggregate[k]*100/Sum)})
+    })
+    
+    this.pieData = pData;
   }
 
   actionBegin(args: EditEventArgs) {
@@ -93,6 +117,7 @@ export class AppComponent implements OnInit {
         } 
       }
     }
+    this.calcPieData();
   }
 }
 

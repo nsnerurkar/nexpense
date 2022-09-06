@@ -9,7 +9,7 @@
       [editSettings]='editSettings'>
       <e-columns>    
         <e-column field='ExpenseID' headerText='ID' textAlign='Left' isPrimaryKey='true' width=30></e-column>    
-        <e-column field='Date' headerText='Date' textAlign='Center' type="date" format='dd/mm/yyyy' width='75' editType= 'datepickeredit' [edit]='editTypeParams.Date'></e-column>
+        <e-column field='Date' headerText='Date' textAlign='Center' type="date" format='dd/MM/yyyy' width='75' editType= 'datepickeredit' [edit]='editTypeParams.Date'></e-column>
         <e-column field='Type' headerText='Type' textAlign='Center' editType= 'dropdownedit' [edit]='editTypeParams.ExpenseType' width='75'></e-column>
         <e-column field='Amount' headerText='Amount' textAlign="Right" [format]="amtFmtOptions" type="number" editType= 'numericedit' [edit]='editTypeParams.Number' width='75'></e-column>        
         <e-column field='Description' headerText='Description'  width='200'></e-column>
@@ -19,7 +19,7 @@
   <div class="nexpense-chart-container">
     <ejs-accumulationchart id="chart-container" title='Expenses By Type' [legendSettings]='legendSettings' enableSmartLabels="true">
       <e-accumulation-series-collection>
-          <e-accumulation-series [dataSource]='getPieData()' xName='Type' yName='Amount' [dataLabel]='datalabel' radius="60%">
+          <e-accumulation-series [dataSource]='pieData' xName='Type' yName='Amount' [dataLabel]='datalabel' radius="60%">
           </e-accumulation-series>
       </e-accumulation-series-collection>
     </ejs-accumulationchart>

@@ -45,8 +45,7 @@ router.get('/expense/:id', async function (req: Request, res: Response, next: Ne
 router.post('/expense', async function (req: Request, res: Response, next: NextFunction) {
   try {
     const repository = await AppDataSource.getRepository(Expense);
-    const action = req.body.action;
-    console.log(req.body);
+    const action = req.body.action;    
     switch(action){
       case "insert":
         {
