@@ -8,6 +8,7 @@ import { ChartModule, AccumulationChartAllModule, AccumulationChartModule, Accum
 import { FormsModule } from '@angular/forms';
 import { DatePickerAllModule } from '@syncfusion/ej2-angular-calendars';
 import { TextBoxModule } from '@syncfusion/ej2-angular-inputs';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { TextBoxModule } from '@syncfusion/ej2-angular-inputs';
     AccumulationChartModule,
     DatePickerAllModule,
     FormsModule,
-    TextBoxModule
+    TextBoxModule,
+    HttpClientModule
   ],
   providers: [
     AccumulationDataLabelService,

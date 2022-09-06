@@ -23,7 +23,7 @@ function createWindow() {
     // Open the DevTools.
     mainWindow.webContents.openDevTools();
 
-    mainWindow.setMenuBarVisibility(false);
+    //mainWindow.setMenuBarVisibility(false);
 
     mainWindow.on('closed', function () {
         mainWindow = null;

@@ -1,4 +1,4 @@
-import {BaseEntity, Column, Entity, PrimaryGeneratedColumn, createConnection, Connection, Repository} from "typeorm";
+import {BaseEntity, Column, Entity, PrimaryGeneratedColumn} from "typeorm";
 
 @Entity({name: 'expense'})
 export class Expense extends BaseEntity {
@@ -16,20 +16,4 @@ export class Expense extends BaseEntity {
 
   @Column()
   Description!: string
-}
-
-let connection:Connection;
-
-export async function getExpenseRepository(): Promise<Repository<Expense>> {
-  if (connection===undefined) {
-    connection = await createConnection({
-      type: 'sqlite',
-      database: 'database.db',
-      synchronize: true,
-      entities: [
-        Expense
-      ],
-    });
-  }
-  return connection.getRepository(Expense);
 }

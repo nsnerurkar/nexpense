@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Column, EditEventArgs, GridComponent, ToolbarItems } from '@syncfusion/ej2-angular-grids';
 import { setCurrencyCode, loadCldr } from '@syncfusion/ej2-base';
-import { Query, DataManager } from '@syncfusion/ej2-data';
+import { Query, DataManager, RemoteSaveAdaptor  } from '@syncfusion/ej2-data';
+import { DatabaseService } from './services/database.service';
 
 @Component({
   selector: 'app-root',
@@ -10,10 +11,7 @@ import { Query, DataManager } from '@syncfusion/ej2-data';
 })
 export class AppComponent implements OnInit {
 
-  public data: object[] = [
-    {ExpenseID:'1',Date:'04/09/2022',Amount:200,'Type':'electricity','Description':'For Month of September'},
-    {ExpenseID:'2',Date:'04/08/2022',Amount:200,'Type':'rent','Description':'For Month of September'}
-  ];
+  public data!: DataManager;
 
   E_TYPES = [{label:'Electricity', value:'electricity'}, {label:'Rent', value:'rent'}]
 
@@ -38,7 +36,7 @@ export class AppComponent implements OnInit {
 
   @ViewChild('grid') public grid!: GridComponent;
 
-  constructor(){
+  constructor(public dbSvc:DatabaseService){
 
   }
 
@@ -46,6 +44,15 @@ export class AppComponent implements OnInit {
     //this.data = []; // Get From DB
     setCurrencyCode('INR');
     loadCldr('./currencies.json');
+    this.dbSvc.getExpenseData().subscribe(resp =>{
+      this.data = new DataManager({
+        json: resp,
+        adaptor: new RemoteSaveAdaptor(),
+        insertUrl: this.dbSvc.getUrl('Expense','create'),
+        updateUrl: this.dbSvc.getUrl('Expense','update'),
+        removeUrl: this.dbSvc.getUrl('Expense','delete'),
+      });
+    });
   }
 
   dataBound(){
@@ -77,6 +84,13 @@ export class AppComponent implements OnInit {
         dialog.element.style.maxHeight = "600px";
         // change the header of the dialog
         dialog.header = args.requestType === 'beginEdit' ? 'Edit Expense' : 'New Expense';
+      }
+    }
+    if (args.requestType === 'add') {
+      for (const cols of this.grid.columns) {
+        if ((cols as Column).field === 'ExpenseID') {
+            (cols as Column).visible = true;
+        } 
       }
     }
   }
