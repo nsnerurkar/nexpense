@@ -41,7 +41,7 @@ export class DatabaseService {
   }
 
   getExpenseByDateRange(dateStart:Date,dateEnd:Date){
-    return this.http.get<Expense[]>(this.getUrl('Expense','byDate') +'/'+dateStart.toISOString()+'/'+dateEnd.toISOString());
+    return this.http.get<Expense[]>(this.getUrl('Expense','byDate') +dateStart.toJSON()+'/'+dateEnd.toJSON());
   }
 
 

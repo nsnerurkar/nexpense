@@ -38,13 +38,7 @@ export class AppComponent implements OnInit {
   primaryXAxis = {valueType: 'Category', title: 'Months'};
   primaryYAxis = {minimum: 0, maximum: 200000, interval: 50000, title: 'Amount'};
 
-  monthData = [
-    { month: "January", amount: 150000 },
-    { month: "February", amount: 98000 },
-    { month: "March", amount: 101000 },
-    { month: "April", amount: 78000 },
-    { month: "May", amount: 89000 }
-  ];
+  monthData:any[] = [];
   
   @ViewChild('grid') public grid!: GridComponent;
 
@@ -66,7 +60,37 @@ export class AppComponent implements OnInit {
       });
       this.calcPieData();
     });
-    
+    this.calcMonthData();    
+  }
+
+  calcMonthData(){
+    const monthNames = ["January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
+    ];
+    let today = new Date();
+    let startDate = new Date(today.getFullYear(), today.getMonth() - 5, 1);
+
+    this.dbSvc.getExpenseByDateRange(startDate,today).subscribe((resp)=>{
+      console.log(resp);
+      let aggregate:any = {};
+
+      resp.forEach(obj=>{
+        const d = new Date(obj.Date);
+        let month = monthNames[d.getMonth()];
+        if (month in aggregate){
+          aggregate[month] += obj.Amount;
+        } else {
+          aggregate[month] = obj.Amount;
+        }
+      });
+
+      let pData:any[] = [];    
+      Object.keys(aggregate).forEach((k) =>{
+        pData.push({'month':k,amount:aggregate[k]});
+      });
+      
+      this.monthData = pData;
+    });
   }
 
   dataBound(){
@@ -129,6 +153,7 @@ export class AppComponent implements OnInit {
       }
     }
     this.calcPieData();
+    this.calcMonthData();
   }
 }
 

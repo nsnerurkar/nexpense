@@ -39,7 +39,7 @@ router.get('/expense', async function (req: Request, res: Response, next: NextFu
 });
 
 router.get('/expense/byDate/:dateStart/:dateEnd', async function (req: Request, res: Response, next: NextFunction) {
-  try {
+  try {    
     const dateStart = new Date(req.params.dateStart);
     const dateEnd = new Date(req.params.dateEnd);
     const repository = await AppDataSource.getRepository(Expense);
