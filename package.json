@@ -1,0 +1,28 @@
+{
+  "name": "nexpenseapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build-ui": "cd UI && npm run build",
+    "build-server": "npx tsc",
+    "build": "npm-run-all -s build-ui build-server",
+    "start-server": "node dist/nexpense",
+    "start": "electron .",    
+    "serve-ui": "cd UI && ng serve",
+    "serve": "npm-run-all -p start-server serve-ui"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "electron": "^20.1.1",
+    "express": "^4.18.1",
+    "express-bearer-token": "^2.4.0",
+    "sqlite3": "^5.0.11",
+    "typeorm": "^0.3.9"
+  },
+  "devDependencies": {
+    "npm-run-all": "^4.1.5"
+  }
+}

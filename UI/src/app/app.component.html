@@ -1,0 +1,36 @@
+<div class="logo">
+  <img src="assets/logo.png" style="height: 70px; margin-left: 5px;"/>
+</div>
+<div class="container">
+  <div class="nexpense-grid-container">
+    <ejs-grid #grid [dataSource]='data' [toolbar]="toolbar" 
+      [pageSettings]='pageSettings' (dataBound)='dataBound()' (actionBegin)="actionBegin($event)"
+      (actionComplete)="actionComplete($event)"
+      [editSettings]='editSettings'>
+      <e-columns>    
+        <e-column field='ExpenseID' headerText='ID' textAlign='Left' isPrimaryKey='true' width=30></e-column>    
+        <e-column field='Date' headerText='Date' textAlign='Center' type="date" format='dd/MM/yyyy' width='75' editType= 'datepickeredit' [edit]='editTypeParams.Date'></e-column>
+        <e-column field='Type' headerText='Type' textAlign='Center' editType= 'dropdownedit' [edit]='editTypeParams.ExpenseType' width='75'></e-column>
+        <e-column field='Amount' headerText='Amount' textAlign="Right" [format]="amtFmtOptions" type="number" editType= 'numericedit' [edit]='editTypeParams.Number' width='75'></e-column>        
+        <e-column field='Description' headerText='Description'  width='200'></e-column>
+      </e-columns>
+    </ejs-grid>
+  </div>
+  <div class="charts-container">
+    <div class="nexpense-pie-container">
+      <ejs-accumulationchart height="350px" width="350px" id="chart-container" title='Expenses By Type' [legendSettings]='legendSettings' enableSmartLabels="true">
+        <e-accumulation-series-collection>
+            <e-accumulation-series [dataSource]='pieData' xName='Type' yName='Amount' [dataLabel]='datalabel' radius="60%">
+            </e-accumulation-series>
+        </e-accumulation-series-collection>
+      </ejs-accumulationchart>
+    </div>
+    <div class="nexpense-chart-container">
+      <ejs-chart id="chart-container2" height="250px" width="100%" [primaryXAxis]='primaryXAxis' [primaryYAxis]='primaryYAxis' title='By Month' [legendSettings]='legendSettings' enableSmartLabels="true">
+        <e-series-collection>
+            <e-series [dataSource]='monthData' type='Column' xName='month' yName='amount' name='Expense By Month'></e-series>
+        </e-series-collection>
+      </ejs-chart>
+    </div>
+  </div>
+</div>
