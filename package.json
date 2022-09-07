@@ -7,9 +7,8 @@
     "build-ui": "cd UI && npm run build",
     "build-server": "npx tsc",
     "build": "npm-run-all -s build-ui build-server",
-    "start-server": "node dist/server",
-    "start-electron": "electron ./index.js",
-    "start": "npm-run-all -p start-server start-electron",
+    "start-server": "node dist/nexpense",
+    "start": "electron .",    
     "serve-ui": "cd UI && ng serve",
     "serve": "npm-run-all -p start-server serve-ui"
   },

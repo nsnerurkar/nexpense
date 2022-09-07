@@ -1,6 +1,7 @@
 const { app, BrowserWindow } = require('electron');
 const url = require("url");
 const path = require("path");
+const { fork } = require('child_process');
 
 let mainWindow;
 
@@ -8,9 +9,10 @@ function createWindow() {
     mainWindow = new BrowserWindow({
         width: 800,
         height: 600,
-        webPreferences: {
+        
+        /*webPreferences: {
             nodeIntegration: true
-        }
+        }*/
     })
 
     mainWindow.loadURL(
@@ -21,21 +23,31 @@ function createWindow() {
         })
     );
     // Open the DevTools.
-    mainWindow.webContents.openDevTools();
+    //mainWindow.webContents.openDevTools();
 
-    //mainWindow.setMenuBarVisibility(false);
+    mainWindow.setMenuBarVisibility(false);
+    mainWindow.maximize();    
 
     mainWindow.on('closed', function () {
         mainWindow = null;
     })
 }
 
-app.on('ready', createWindow)
-
-app.on('window-all-closed', function () {
-    if (process.platform !== 'darwin') app.quit();
-})
-
-app.on('activate', function () {
-    if (mainWindow === null) createWindow();
-})
+app.whenReady().then(() => {
+    fork(path.join(__dirname, '/dist/serverproc.js'), [], {
+        stdio: 'pipe'
+    });
+    createWindow();
+  
+    app.on('activate', () => {
+      if (BrowserWindow.getAllWindows().length === 0) {
+        createWindow();
+      }
+    });
+});
+  
+app.on('window-all-closed', () => {
+    if (process.platform !== 'darwin') {
+        app.quit();
+    }
+});
