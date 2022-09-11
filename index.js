@@ -17,7 +17,7 @@ function createWindow() {
 
     mainWindow.loadURL(
         url.format({
-            pathname: path.join(__dirname, `/dist/index.html`),
+            pathname: path.join(__dirname, `/index.html`),
             protocol: "file:",
             slashes: true
         })
@@ -34,7 +34,7 @@ function createWindow() {
 }
 
 app.whenReady().then(() => {
-    fork(path.join(__dirname, '/dist/serverproc.js'), [], {
+    fork(path.join(__dirname, '/serverproc.js'), [], {
         stdio: 'pipe'
     });
     createWindow();

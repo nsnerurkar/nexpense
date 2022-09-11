@@ -1,16 +1,19 @@
 {
-  "name": "nexpenseapp",
+  "name": "nexpense",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "build-ui": "cd UI && npm run build",
     "build-server": "npx tsc",
-    "build": "npm-run-all -s build-ui build-server",
+    "build": "npm-run-all -s build-ui build-server && npm run postbuild-1 && npm run postbuild-2",
     "start-server": "node dist/nexpense",
     "start": "electron .",
     "serve-ui": "cd UI && ng serve",
-    "serve": "npm-run-all -p start-server serve-ui"
+    "serve": "npm-run-all -p start-server serve-ui",
+    "postbuild-1":"cp ./index.js ./dist || copy .\\index.js .\\dist\\",
+    "postbuild-2":"cp ./package.json ./dist || copy .\\package.json .\\dist\\",
+    "package":"asar pack dist dist/app.asar"
   },
   "author": "",
   "license": "ISC",
