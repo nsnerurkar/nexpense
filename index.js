@@ -4,6 +4,22 @@ const path = require("path");
 const { fork } = require('child_process');
 
 let mainWindow;
+let splash;
+
+const splashTemplate = () => {
+    return (`
+    <!DOCTYPE html>
+        <head>
+            <meta charset="UTF-8">        
+        </head>
+        <body>
+            <div style="text-align:center;vertical-align:middle;background-color:#cecece;margin:0;padding:20px">
+                <h1 align="center">Solution by <br/> Nishad Nerurkar </h1>
+            </div>
+        </body>
+    </html>
+    `)
+  }
 
 function createWindow() {
     mainWindow = new BrowserWindow({
@@ -33,11 +49,33 @@ function createWindow() {
     })
 }
 
+function createSplash(){
+    splash = new BrowserWindow({ 
+        width: 300, 
+        height: 200, 
+        transparent: true, 
+        frame: false, 
+        alwaysOnTop: true 
+      });
+
+      var file = 'data:text/html;charset=UTF-8,' + encodeURIComponent(splashTemplate());
+      
+      splash.loadURL(file);
+      splash.center();      
+}
+
 app.whenReady().then(() => {
-    fork(path.join(__dirname, '/serverproc.js'), [], {
+    createSplash();
+    const child = fork(path.join(__dirname, '/serverproc.js'), [], {
         stdio: 'pipe'
     });
-    createWindow();
+    child.on('message',(evt)=>{
+        if (evt.status === true){
+            createWindow();
+            splash.close();        
+        }
+    });
+    
   
     app.on('activate', () => {
       if (BrowserWindow.getAllWindows().length === 0) {
